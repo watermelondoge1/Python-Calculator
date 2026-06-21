@@ -2,12 +2,26 @@
 
 A calculator application built in Python.
 
-## Features
--Addition, subtraction, multiplication, division through input in terminal
--Checks for valid inputs
--Error handling
+## Features 
+Currently:
+
+```markdown
+- Basic openable app with UI
+- Numbers 1-3
+- Addition operator
+
+## Planned Features
+
+```markdown
+- More numbers
+- More operators
+- Error handling
+- Improved UI
 
 ## How To Run
-Run file:
-Calculator.py,
-Input Numbers and Operations
+
+- Clone this repository: 
+'''bash 
+git clone https://github.com/watermelondoge1/Python-Calculator.git
+- Install required packages: pip install -r requirements.txt
+- Run application: python UI.py
