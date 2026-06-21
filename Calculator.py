@@ -1,56 +1,23 @@
+import ast
 import operator
 
-Repeat = True
-prompts = {
-    0: "Enter First Number or Stop to Stop\n",
-    1: "Enter Second Number or Stop to Stop\n",
-    2: "Enter Operation (+, -, *, /\n)",
-}
 
+class Calculator:
+    def __init__(self):
+        self.operators = {ast.Add: operator.add}
 
-def Get(A, func):
-    A = A.strip()
-    if A.lower() in ["stop", "s"]:
-        global Repeat
-        Repeat = False
-        return "Escape"
-    return func(A)
+    def evaluate(self, expression: str):
+        tree = ast.parse(expression, mode="eval")
+        return self.eval_node(tree.body)
 
-
-def Get_or_Go(A):
-    try:
-        return int(A)
-    except ValueError:
-        return None
-
-
-def Get_Operator(B):
-    operators = {
-        "+": operator.add,
-        "-": operator.sub,
-        "*": operator.mul,
-        "/": operator.truediv,
-    }
-    B = B.strip()
-    return operators.get(B)
-
-
-while Repeat:
-    escape = False
-    result = {}
-    for i in prompts:
-        inp = input(prompts[i])
-        if i == 2:
-            result[i] = Get(inp, Get_Operator)
-        else:
-            result[i] = Get(inp, Get_or_Go)
-        if result[i] == "Escape":
-            escape = True
-            break
-        elif result[i] is None:
-            escape = True
-            break
-        if escape:
-            continue
-    Answer = result[2](result[1], result[0])
-    print(Answer)
+    def eval_node(self, node):
+        if isinstance(node, ast.Constant):
+            if node.value % 1 == 0:
+                return int(node.value)
+            else:
+                return float(node.value)
+        elif isinstance(node, ast.BinOp):
+            left = self.eval_node(node.left)
+            right = self.eval_node(node.right)
+            op = self.operators.get(type(node.op))
+            return op(left, right)
