@@ -22,7 +22,7 @@ Currently:
 ## How To Run
 
 - Clone this repository: 
-'''bash 
+```bash 
 git clone https://github.com/watermelondoge1/Python-Calculator.git
 ```
 - Install required packages: pip install -r requirements.txt
