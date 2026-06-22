@@ -4,12 +4,10 @@ from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
     QPushButton,
-    QVBoxLayout,
+    QGridLayout,
     QWidget,
     QLabel,
 )
-
-buttons = ["1", "2", "3", "+", "="]
 
 
 class MainWindow(QMainWindow):
@@ -19,25 +17,61 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Calculator")
         self.calc = Calculator()
         self.label = QLabel()
-        self.button1 = QPushButton(buttons[0])
-        self.button2 = QPushButton(buttons[1])
-        self.button3 = QPushButton(buttons[2])
-        self.buttonAdd = QPushButton(buttons[3])
-        self.buttonEquals = QPushButton(buttons[4])
+        buttonsList = [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "0",
+            "+",
+            "-",
+            "*",
+            "/",
+            "=",
+            "C",
+        ]
+        self.buttons = {}
 
-        self.button1.clicked.connect(self.number_clicked)
-        self.button2.clicked.connect(self.number_clicked)
-        self.button3.clicked.connect(self.number_clicked)
-        self.buttonAdd.clicked.connect(self.operator_clicked)
-        self.buttonEquals.clicked.connect(self.equals_clicked)
+        for text in buttonsList:
+            button = QPushButton(text)
+            self.buttons[text] = button
 
-        layout = QVBoxLayout()
-        layout.addWidget(self.label)
-        layout.addWidget(self.button1)
-        layout.addWidget(self.button2)
-        layout.addWidget(self.button3)
-        layout.addWidget(self.buttonAdd)
-        layout.addWidget(self.buttonEquals)
+            if text.isdigit():
+                button.clicked.connect(self.number_clicked)
+            elif text == "=":
+                button.clicked.connect(self.equals_clicked)
+            elif text == "C":
+                button.clicked.connect(self.clear)
+            else:
+                button.clicked.connect(self.operator_clicked)
+
+        layout = QGridLayout()
+        layout.addWidget(self.label, 0, 0)
+
+        layout.addWidget(self.buttons["7"], 1, 0)
+        layout.addWidget(self.buttons["8"], 1, 1)
+        layout.addWidget(self.buttons["9"], 1, 2)
+        layout.addWidget(self.buttons["/"], 1, 3)
+
+        layout.addWidget(self.buttons["4"], 2, 0)
+        layout.addWidget(self.buttons["5"], 2, 1)
+        layout.addWidget(self.buttons["6"], 2, 2)
+        layout.addWidget(self.buttons["*"], 2, 3)
+
+        layout.addWidget(self.buttons["1"], 3, 0)
+        layout.addWidget(self.buttons["2"], 3, 1)
+        layout.addWidget(self.buttons["3"], 3, 2)
+        layout.addWidget(self.buttons["-"], 3, 3)
+
+        layout.addWidget(self.buttons["C"], 4, 0)
+        layout.addWidget(self.buttons["0"], 4, 1)
+        layout.addWidget(self.buttons["+"], 4, 2)
+        layout.addWidget(self.buttons["="], 4, 3)
         numpad = QWidget()
         numpad.setLayout(layout)
         self.setCentralWidget(numpad)
@@ -51,8 +85,12 @@ class MainWindow(QMainWindow):
         firstNum = self.label.text()
         self.label.setText(firstNum + " " + button.text() + " ")
 
+    def clear(self):
+        self.label.setText("")
+
     def equals_clicked(self):
         expression = self.label.text()
+        print(expression)
         result = self.calc.evaluate(expression)
         self.label.setText(str(result))
 
