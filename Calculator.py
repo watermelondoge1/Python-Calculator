@@ -35,5 +35,3 @@ class Calculator:
                     return op(left, right)
             except ZeroDivisionError:
                 return "Error Division By Zero"
-            except SyntaxError:
-                return "Error Invalid Expression"
